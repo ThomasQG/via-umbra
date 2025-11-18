@@ -137,30 +137,32 @@
       const size = Math.random() < 0.7 ? 4 : 6;
       p.style.setProperty('--size', size + 'px');
 
-      /* --- Couleur : vert spectral → vert-jaune, avec quelques spores dorées --- */
-      const rareGolden = Math.random() < 0.04; // ~4% de spores dorées
-      let color, glow;
+     /* --- Couleur : vert spectral → vert pur → vert bleu --- */
+const rareGolden = Math.random() < 0.02; // spores dorées ultra rares, 2%
 
-      if (rareGolden) {
-        // spore rare, dorée, plus lumineuse
-        const hue = 55; // doré
-        const sat = 90;
-        const light = 70;
-        color = `hsla(${hue}, ${sat}%, ${light}%, 0.95)`;
-        glow  = `hsla(${hue}, ${sat}%, ${light + 10}%, 1)`;
-      } else {
-        // spectre vert → vert-jaune
-        const baseHue = 100; // vert-jaune
-        const hueJitter = (Math.random() * 24) - 12; // ±12°
-        const hue = baseHue + hueJitter;
+let color, glow;
 
-        const sat = 80 + Math.random() * 10;       // 80–90%
-        const light = 50 + Math.random() * 12;     // 50–62%
-        const alpha = 0.8 + Math.random() * 0.15;  // 0.8–0.95
+if (rareGolden) {
+  // spore rare, dorée
+  const hue = 55;
+  const sat = 85;
+  const light = 65;
+  color = `hsla(${hue}, ${sat}%, ${light}%, 0.95)`;
+  glow  = `hsla(${hue}, ${sat}%, ${light + 10}%, 1)`;
+} else {
+  // spectre vert → vert bleuté (120°–150°)
+  const hue = 120 + Math.random() * 30; // 120–150°
+  const sat = 65 + Math.random() * 15;  // saturation 65–80%
+  const light = 50 + Math.random() * 10; // luminosité 50–60%
+  const alpha = 0.8 + Math.random() * 0.15;
 
-        color = `hsla(${hue}, ${sat}%, ${light}%, ${alpha})`;
-        glow  = `hsla(${hue}, ${sat}%, ${light + 10}%, 1)`;
-      }
+  color = `hsla(${hue}, ${sat}%, ${light}%, ${alpha})`;
+  glow  = `hsla(${hue}, ${sat}%, ${light + 8}%, 1)`;
+}
+
+p.style.setProperty('--color', color);
+p.style.setProperty('--glow', glow);
+
 
       p.style.setProperty('--color', color);
       p.style.setProperty('--glow', glow);
@@ -198,6 +200,7 @@
   </script>
 </body>
 </html>
+
 
 
 
