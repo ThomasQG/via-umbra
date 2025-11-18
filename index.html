@@ -64,7 +64,7 @@
     opacity: 1; /* reste visible quasiment tout du long */
   }
   100% {
-    transform: translate(var(--dx), var(--dy)) scale(1.1);
+    transform: translate(var(--dx), var(--dy)) scale(0.9);
     opacity: 0; /* disparaît seulement à la fin */
   }
 }
@@ -155,16 +155,17 @@ const dy = Math.sin(angle) * distance;
       layer.appendChild(p);
 
       // On supprime la particule après l'animation
-      setTimeout(() => p.remove(), 22000);
+      setTimeout(() => p.remove(), 25000);
     }
 
     // On attend que tout soit chargé
     window.addEventListener('load', () => {
-      setInterval(spawnPollen, 750); // densité du pollen
+      setInterval(spawnPollen, 950); // densité du pollen
     });
   </script>
 </body>
 </html>
+
 
 
 
