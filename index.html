@@ -55,6 +55,95 @@
     .particle:nth-child(1)  { left: 20%; animation-duration: 11s;  animation-delay: -2s; }
     .particle:nth-child(2)  { left: 40%; animation-duration: 9s;   animation-delay: -4s; }
     .particle:nth-child(3)  { left: 60%; animation-duration: 12s;  animation-delay: -1s; }
-    .particle:nth-child(4)  { left: 75%
+    .particle:nth-child(4)  { left: 75%; animation-duration: 8s;   animation-delay: -6s; }
+    .particle:nth-child(5)  { left: 30%; animation-duration: 13s;  animation-delay: -3s; }
+    .particle:nth-child(6)  { left: 50%; animation-duration: 10s;  animation-delay: -5s; }
+    .particle:nth-child(7)  { left: 65%; animation-duration: 14s;  animation-delay: -7s; }
+    .particle:nth-child(8)  { left: 15%; animation-duration: 9.5s; animation-delay: -8s; }
+    .particle:nth-child(9)  { left: 85%; animation-duration: 11.5s;animation-delay: -9s; }
+    .particle:nth-child(10) { left: 45%; animation-duration: 10.5s;animation-delay: -10s; }
+
+    @keyframes float-up {
+      0% {
+        transform: translate3d(0, 0, 0) scale(0.7);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      60% {
+        opacity: 1;
+      }
+      100% {
+        transform: translate3d(0, -60vh, 0) scale(1.1);
+        opacity: 0;
+      }
+    }
+
+    /* CONTENU CENTRAL */
+    .content {
+      position: relative;
+      text-align: center;
+      z-index: 2;
+      padding: 2rem;
+      animation: breathe 16s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%   { transform: translateY(0) scale(1); }
+      50%  { transform: translateY(-4px) scale(1.01); }
+      100% { transform: translateY(0) scale(1); }
+    }
+
+    /* IMAGE CENTRALE SANS CADRE OBLONG */
+    .logo {
+      max-width: min(420px, 80vw);
+      max-height: min(520px, 70vh);
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 1.5rem;
+      filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.35));
+    }
+
+    .title {
+      font-size: clamp(2.4rem, 4vw, 3.4rem);
+      letter-spacing: 0.18em;
+      text-indent: 0.18em;
+      text-transform: uppercase;
+      font-weight: 400;
+      margin-bottom: 0.2rem;
+      color: #f8fff9;
+      text-shadow:
+        0 0 18px rgba(0, 255, 170, 0.6),
+        0 0 40px rgba(0, 120, 70, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <!-- Pollen vert -->
+    <div class="particles-layer">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+    </div>
+
+    <!-- Image + Titre -->
+    <section class="content">
+      <img src="1.png" alt="Fleur-Fantôme Via Umbra" class="logo" />
+      <h1 class="title">VIAUMBRA</h1>
+    </section>
+  </main>
+</body>
+</html>
+
 
 
