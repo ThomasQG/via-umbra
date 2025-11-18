@@ -46,29 +46,29 @@
       width: var(--size);
       height: var(--size);
       border-radius: 50%;
-      background: rgba(0, 255, 170, 0.9);
-      box-shadow: 0 0 8px rgba(0, 255, 170, 0.9);
+      background: var(--color, rgba(0, 255, 170, 0.9));
+      box-shadow: 0 0 10px var(--glow, rgba(0, 255, 170, 0.9));
+      filter: blur(var(--blur, 0px));
       opacity: 0;
-      animation: drift 100s linear forwards; /* plus lent, plus long à l’écran */
+      animation: drift 100s linear forwards; /* tu as demandé à garder cette vitesse */
     }
 
-   @keyframes drift {
-  0% {
-    transform: translate(0, 0) scale(0.7);
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  95% {
-    opacity: 1; /* reste visible quasiment tout du long */
-  }
-  100% {
-    transform: translate(var(--dx), var(--dy)) scale(0.9);
-    opacity: 0; /* disparaît seulement à la fin */
-  }
-}
-
+    @keyframes drift {
+      0% {
+        transform: translate(0, 0) scale(0.7);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      95% {
+        opacity: 1; /* reste visible quasiment tout du long */
+      }
+      100% {
+        transform: translate(var(--dx), var(--dy)) scale(0.9);
+        opacity: 0; /* disparaît seulement à la fin */
+      }
+    }
 
     /* CONTENU CENTRAL */
     .content {
@@ -121,51 +121,85 @@
   </main>
 
   <script>
-   function spawnPollen() {
-  const layer = document.querySelector('.particles-layer');
-  const logo = document.querySelector('.logo');
-  if (!logo || !layer) return;
+    function spawnPollen() {
+      const layer = document.querySelector('.particles-layer');
+      const logo = document.querySelector('.logo');
+      if (!logo || !layer) return;
 
-  const rect = logo.getBoundingClientRect();
-  const centerX = rect.left + rect.width / 2;
-  const centerY = rect.top + rect.height / 2;
+      const rect = logo.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
 
-  const p = document.createElement('div');
-  p.className = 'particle';
+      const p = document.createElement('div');
+      p.className = 'particle';
 
-  // Taille : spores de 4px et 6px
-  const size = Math.random() < 0.7 ? 4 : 6;
-  p.style.setProperty('--size', size + 'px');
+      /* --- Taille : spores de 4px et 6px --- */
+      const size = Math.random() < 0.7 ? 4 : 6;
+      p.style.setProperty('--size', size + 'px');
 
-  // Naissance au centre de la fleur
-  p.style.left = centerX + 'px';
-  p.style.top = (centerY - 30) + 'px';
+      /* --- Couleur : vert spectral → vert-jaune, avec quelques spores dorées --- */
+      const rareGolden = Math.random() < 0.04; // ~4% de spores dorées
+      let color, glow;
 
-  // Direction aléatoire
-  const angle = Math.random() * Math.PI * 2;
-  const maxDim = Math.max(window.innerWidth, window.innerHeight);
-  const distance = maxDim * 1.2;
+      if (rareGolden) {
+        // spore rare, dorée, plus lumineuse
+        const hue = 55; // doré
+        const sat = 90;
+        const light = 70;
+        color = `hsla(${hue}, ${sat}%, ${light}%, 0.95)`;
+        glow  = `hsla(${hue}, ${sat}%, ${light + 10}%, 1)`;
+      } else {
+        // spectre vert → vert-jaune
+        const baseHue = 100; // vert-jaune
+        const hueJitter = (Math.random() * 24) - 12; // ±12°
+        const hue = baseHue + hueJitter;
 
-  const dx = Math.cos(angle) * distance;
-  const dy = Math.sin(angle) * distance;
+        const sat = 80 + Math.random() * 10;       // 80–90%
+        const light = 50 + Math.random() * 12;     // 50–62%
+        const alpha = 0.8 + Math.random() * 0.15;  // 0.8–0.95
 
-  p.style.setProperty('--dx', dx + 'px');
-  p.style.setProperty('--dy', dy + 'px');
+        color = `hsla(${hue}, ${sat}%, ${light}%, ${alpha})`;
+        glow  = `hsla(${hue}, ${sat}%, ${light + 10}%, 1)`;
+      }
 
-  layer.appendChild(p);
+      p.style.setProperty('--color', color);
+      p.style.setProperty('--glow', glow);
 
-  // Suppression après la fin de l'anim
-  setTimeout(() => p.remove(), 130000);
-}
+      /* --- Profondeur : léger blur pour certaines spores "lointaines" --- */
+      const far = Math.random() < 0.35; // ~35% en arrière-plan
+      const blur = far ? (0.4 + Math.random() * 1.2) : 0;
+      p.style.setProperty('--blur', blur + 'px');
 
+      // Naissance au centre de la fleur, légèrement remontée
+      p.style.left = centerX + 'px';
+      p.style.top = (centerY - 30) + 'px';
+
+      // Direction aléatoire
+      const angle = Math.random() * Math.PI * 2;
+      const maxDim = Math.max(window.innerWidth, window.innerHeight);
+      const distance = maxDim * 1.2; // tu l'avais déjà comme ça, je le garde
+
+      const dx = Math.cos(angle) * distance;
+      const dy = Math.sin(angle) * distance;
+
+      p.style.setProperty('--dx', dx + 'px');
+      p.style.setProperty('--dy', dy + 'px');
+
+      layer.appendChild(p);
+
+      // Suppression après la fin de l'anim (100s) + marge
+      setTimeout(() => p.remove(), 130000);
+    }
 
     // On attend que tout soit chargé
     window.addEventListener('load', () => {
-      setInterval(spawnPollen, 950); // densité du pollen
+      setInterval(spawnPollen, 950); // densité du pollen (tu voulais garder ça aussi)
     });
   </script>
 </body>
 </html>
+
+
 
 
 
