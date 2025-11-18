@@ -136,29 +136,32 @@
       /* --- Taille : spores de 4px et 6px --- */
       const size = Math.random() < 0.7 ? 4 : 6;
       p.style.setProperty('--size', size + 'px');
-
-     /* --- Couleur : vert spectral → vert pur → vert bleu --- */
-const rareGolden = Math.random() < 0.02; // spores dorées ultra rares, 2%
+/* --- Couleur : vert spectral froid → bleu-vert fantomatique --- */
+const rareGolden = Math.random() < 0.015; // spores dorées encore plus rares
 
 let color, glow;
 
 if (rareGolden) {
   // spore rare, dorée
   const hue = 55;
-  const sat = 85;
-  const light = 65;
+  const sat = 80;
+  const light = 60;
   color = `hsla(${hue}, ${sat}%, ${light}%, 0.95)`;
   glow  = `hsla(${hue}, ${sat}%, ${light + 10}%, 1)`;
 } else {
-  // spectre vert → vert bleuté (120°–150°)
-  const hue = 120 + Math.random() * 30; // 120–150°
-  const sat = 65 + Math.random() * 15;  // saturation 65–80%
-  const light = 50 + Math.random() * 10; // luminosité 50–60%
+  // spectre turquoise → bleu-vert → vert spectral froid (160–190°)
+  const hue = 160 + Math.random() * 30; // 160–190
+  const sat = 60 + Math.random() * 15;  // 60–75%
+  const light = 45 + Math.random() * 17; // 45–62%
   const alpha = 0.8 + Math.random() * 0.15;
 
   color = `hsla(${hue}, ${sat}%, ${light}%, ${alpha})`;
-  glow  = `hsla(${hue}, ${sat}%, ${light + 8}%, 1)`;
+  glow  = `hsla(${hue}, ${sat}%, ${light + 12}%, 1)`;
 }
+
+p.style.setProperty('--color', color);
+p.style.setProperty('--glow', glow);
+
 
 p.style.setProperty('--color', color);
 p.style.setProperty('--glow', glow);
@@ -200,6 +203,7 @@ p.style.setProperty('--glow', glow);
   </script>
 </body>
 </html>
+
 
 
 
