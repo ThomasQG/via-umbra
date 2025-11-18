@@ -33,42 +33,41 @@
     }
 
     /* --- POLLEN VERT : spores depuis la fleur --- */
-.particles-layer {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 3; /* passe DEVANT la fleur */
-}
+    .particles-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 3; /* passe DEVANT la fleur */
+    }
 
-.particle {
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: rgba(0, 255, 170, 0.9);
-  box-shadow: 0 0 8px rgba(0, 255, 170, 0.9);
-  opacity: 0;
-  animation: drift 3s linear forwards;
-}
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(0, 255, 170, 0.9);
+      box-shadow: 0 0 8px rgba(0, 255, 170, 0.9);
+      opacity: 0;
+      animation: drift 3s linear forwards;
+    }
 
-@keyframes drift {
-  0% {
-    transform: translate(0, 0) scale(0.7);
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  60% {
-    opacity: 1;
-  }
-  100% {
-    transform: translate(var(--dx), var(--dy)) scale(0.2);
-    opacity: 0;
-  }
-}
-
+    @keyframes drift {
+      0% {
+        transform: translate(0, 0) scale(0.7);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      60% {
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--dx), var(--dy)) scale(0.2);
+        opacity: 0;
+      }
+    }
 
     /* CONTENU CENTRAL */
     .content {
@@ -85,14 +84,13 @@
       100% { transform: translateY(0) scale(1); }
     }
 
-    /* IMAGE CENTRALE SANS CADRE OBLONG */
+    /* IMAGE CENTRALE */
     .logo {
       max-width: min(420px, 80vw);
       max-height: min(520px, 70vh);
       object-fit: contain;
       display: block;
       margin: 0 auto 1.5rem;
-      
     }
 
     .title {
@@ -109,49 +107,9 @@
   </style>
 </head>
 
-<script>
-  const layer = document.querySelector('.particles-layer');
-  const logo = document.querySelector('.logo');
-
-  function spawnPollen() {
-    if (!logo || !layer) return;
-
-    // Position de la fleur dans la fenêtre
-    const rect = logo.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-
-    const p = document.createElement('div');
-    p.className = 'particle';
-
-    // Naissance au centre de la fleur
-    p.style.left = centerX + 'px';
-    p.style.top = centerY + 'px';
-
-    // Direction aléatoire
-    const angle = Math.random() * Math.PI * 2; // 0 → 360°
-    const distance = 150 + Math.random() * 250;
-
-    const dx = Math.cos(angle) * distance;
-    const dy = Math.sin(angle) * distance;
-
-    p.style.setProperty('--dx', dx + 'px');
-    p.style.setProperty('--dy', dy + 'px');
-
-    layer.appendChild(p);
-
-    // On supprime la particule après l'animation
-    setTimeout(() => p.remove(), 3000);
-  }
-
-  // Densité du pollen (en ms)
-  setInterval(spawnPollen, 120);
-</script>
-
-  
 <body>
   <main class="page">
-    <!-- Pollen vert -->
+    <!-- Pollen vert généré dynamiquement -->
     <div class="particles-layer"></div>
 
     <!-- Image + Titre -->
@@ -160,8 +118,50 @@
       <h1 class="title">VIA UMBRA</h1>
     </section>
   </main>
+
+  <script>
+    function spawnPollen() {
+      const layer = document.querySelector('.particles-layer');
+      const logo = document.querySelector('.logo');
+      if (!logo || !layer) return;
+
+      // Position de la fleur dans la fenêtre
+      const rect = logo.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      const p = document.createElement('div');
+      p.className = 'particle';
+
+      // Naissance au centre de la fleur
+      p.style.left = centerX + 'px';
+      p.style.top = centerY + 'px';
+
+      // Direction aléatoire
+      const angle = Math.random() * Math.PI * 2; // 0 → 360°
+      const distance = 150 + Math.random() * 250;
+
+      const dx = Math.cos(angle) * distance;
+      const dy = Math.sin(angle) * distance;
+
+      p.style.setProperty('--dx', dx + 'px');
+      p.style.setProperty('--dy', dy + 'px');
+
+      layer.appendChild(p);
+
+      // On supprime la particule après l'animation
+      setTimeout(() => p.remove(), 3000);
+    }
+
+    // On attend que tout soit chargé
+    window.addEventListener('load', () => {
+      setInterval(spawnPollen, 120); // densité du pollen
+    });
+  </script>
 </body>
 </html>
+
+
 
 
 
