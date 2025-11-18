@@ -32,7 +32,7 @@
       overflow: hidden;
     }
 
-    /* --- POLLEN VERT : spores très lentes depuis la fleur --- */
+    /* --- POLLEN VERT : spores depuis la fleur --- */
     .particles-layer {
       position: absolute;
       inset: 0;
@@ -43,31 +43,32 @@
 
     .particle {
       position: absolute;
-      width: 4px;        /* +30% plus grosses qu'avant */
+      width: 4px;
       height: 4px;
       border-radius: 50%;
       background: rgba(0, 255, 170, 0.9);
       box-shadow: 0 0 8px rgba(0, 255, 170, 0.9);
       opacity: 0;
-      animation: drift 30s linear forwards; /* ultra lent */
+      animation: drift 60s linear forwards; /* plus lent, plus long à l’écran */
     }
 
-    @keyframes drift {
-      0% {
-        transform: translate(0, 0) scale(0.7);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;  /* elles apparaissent doucement */
-      }
-      95% {
-        opacity: 1;  /* restent visibles presque jusqu’au bout */
-      }
-      100% {
-        transform: translate(var(--dx), var(--dy)) scale(0.6);
-        opacity: 0;  /* disparaissent après avoir terminé leur trajet */
-      }
-    }
+   @keyframes drift {
+  0% {
+    transform: translate(0, 0) scale(0.7);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1; /* reste visible quasiment tout du long */
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) scale(0.9);
+    opacity: 0; /* disparaît seulement à la fin */
+  }
+}
+
 
     /* CONTENU CENTRAL */
     .content {
@@ -109,7 +110,7 @@
 
 <body>
   <main class="page">
-    <!-- Pollen généré dynamiquement -->
+    <!-- Pollen vert généré dynamiquement -->
     <div class="particles-layer"></div>
 
     <!-- Image + Titre -->
@@ -133,49 +134,37 @@
       const p = document.createElement('div');
       p.className = 'particle';
 
-      // Naissance au centre de la fleur, légèrement remontée
+      // Naissance au centre de la fleur
       p.style.left = centerX + 'px';
-      p.style.top = (centerY - 20) + 'px';
+      p.style.top = (centerY - 30) + 'px';
 
       // Direction aléatoire
-      const angle = Math.random() * Math.PI * 2; // 0 → 360°
+     const angle = Math.random() * Math.PI * 2;
 
-      // Trajet vaste : distance basée sur la plus grande dimension de l'écran
-      const maxDim = Math.max(window.innerWidth, window.innerHeight);
-      const distance = maxDim * 2.2; // assez pour sortir largement du cadre
+// on prend la plus grande dimension de l'écran
+const maxDim = Math.max(window.innerWidth, window.innerHeight);
+// distance suffisante pour sortir de l'écran dans n'importe quelle direction
+const distance = maxDim * 1.2;
 
-      const dx = Math.cos(angle) * distance;
-      const dy = Math.sin(angle) * distance;
+const dx = Math.cos(angle) * distance;
+const dy = Math.sin(angle) * distance;
 
       p.style.setProperty('--dx', dx + 'px');
       p.style.setProperty('--dy', dy + 'px');
 
       layer.appendChild(p);
 
-      // On supprime la particule après la fin de l'animation (30s) + marge
-      setTimeout(() => p.remove(), 34000);
+      // On supprime la particule après l'animation
+      setTimeout(() => p.remove(), 18000);
     }
 
-    // Densité du pollen : peu de particules, ambiance contemplative
+    // On attend que tout soit chargé
     window.addEventListener('load', () => {
-      setInterval(spawnPollen, 450); // 0.45s entre chaque spore
+      setInterval(spawnPollen, 750); // densité du pollen
     });
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
