@@ -43,8 +43,8 @@
 
     .particle {
       position: absolute;
-      width: 5px;
-      height: 5px;
+      width: var(--size);
+      height: var(--size);
       border-radius: 50%;
       background: rgba(0, 255, 170, 0.9);
       box-shadow: 0 0 8px rgba(0, 255, 170, 0.9);
@@ -121,42 +121,43 @@
   </main>
 
   <script>
-    function spawnPollen() {
-      const layer = document.querySelector('.particles-layer');
-      const logo = document.querySelector('.logo');
-      if (!logo || !layer) return;
+   function spawnPollen() {
+  const layer = document.querySelector('.particles-layer');
+  const logo = document.querySelector('.logo');
+  if (!logo || !layer) return;
 
-      // Position de la fleur dans la fenêtre
-      const rect = logo.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
+  const rect = logo.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
 
-      const p = document.createElement('div');
-      p.className = 'particle';
+  const p = document.createElement('div');
+  p.className = 'particle';
 
-      // Naissance au centre de la fleur
-      p.style.left = centerX + 'px';
-      p.style.top = (centerY - 30) + 'px';
+  // Taille : spores de 4px et 6px
+  const size = Math.random() < 0.7 ? 4 : 6;
+  p.style.setProperty('--size', size + 'px');
 
-      // Direction aléatoire
-     const angle = Math.random() * Math.PI * 2;
+  // Naissance au centre de la fleur
+  p.style.left = centerX + 'px';
+  p.style.top = (centerY - 30) + 'px';
 
-// on prend la plus grande dimension de l'écran
-const maxDim = Math.max(window.innerWidth, window.innerHeight);
-// distance suffisante pour sortir de l'écran dans n'importe quelle direction
-const distance = maxDim * 1.2;
+  // Direction aléatoire
+  const angle = Math.random() * Math.PI * 2;
+  const maxDim = Math.max(window.innerWidth, window.innerHeight);
+  const distance = maxDim * 1.2;
 
-const dx = Math.cos(angle) * distance;
-const dy = Math.sin(angle) * distance;
+  const dx = Math.cos(angle) * distance;
+  const dy = Math.sin(angle) * distance;
 
-      p.style.setProperty('--dx', dx + 'px');
-      p.style.setProperty('--dy', dy + 'px');
+  p.style.setProperty('--dx', dx + 'px');
+  p.style.setProperty('--dy', dy + 'px');
 
-      layer.appendChild(p);
+  layer.appendChild(p);
 
-      // On supprime la particule après l'animation
-      setTimeout(() => p.remove(), 130000);
-    }
+  // Suppression après la fin de l'anim
+  setTimeout(() => p.remove(), 130000);
+}
+
 
     // On attend que tout soit chargé
     window.addEventListener('load', () => {
@@ -165,6 +166,7 @@ const dy = Math.sin(angle) * distance;
   </script>
 </body>
 </html>
+
 
 
 
