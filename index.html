@@ -64,7 +64,7 @@
     opacity: 1; /* reste visible quasiment tout du long */
   }
   100% {
-    transform: translate(var(--dx), var(--dy)) scale(0.9);
+    transform: translate(var(--dx), var(--dy)) scale(0.4);
     opacity: 0; /* disparaît seulement à la fin */
   }
 }
@@ -155,7 +155,7 @@ const dy = Math.sin(angle) * distance;
       layer.appendChild(p);
 
       // On supprime la particule après l'animation
-      setTimeout(() => p.remove(), 18000);
+      setTimeout(() => p.remove(), 22000);
     }
 
     // On attend que tout soit chargé
@@ -165,6 +165,7 @@ const dy = Math.sin(angle) * distance;
   </script>
 </body>
 </html>
+
 
 
 
