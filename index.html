@@ -52,22 +52,23 @@
       animation: drift 40s linear forwards; /* plus lent, plus long à l’écran */
     }
 
-    @keyframes drift {
-      0% {
-        transform: translate(0, 0) scale(0.7);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-      }
-      90% {
-        opacity: 1;
-      }
-      100% {
-        transform: translate(var(--dx), var(--dy)) scale(0.8);
-        opacity: 0;
-      }
-    }
+   @keyframes drift {
+  0% {
+    transform: translate(0, 0) scale(0.7);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1; /* reste visible quasiment tout du long */
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) scale(0.5);
+    opacity: 0; /* disparaît seulement à la fin */
+  }
+}
+
 
     /* CONTENU CENTRAL */
     .content {
@@ -138,11 +139,15 @@
       p.style.top = (centerY - 20) + 'px';
 
       // Direction aléatoire
-      const angle = Math.random() * Math.PI * 2; // 0 → 360°
-      const distance = 250 + Math.random() * 500;
+     const angle = Math.random() * Math.PI * 2;
 
-      const dx = Math.cos(angle) * distance;
-      const dy = Math.sin(angle) * distance;
+// on prend la plus grande dimension de l'écran
+const maxDim = Math.max(window.innerWidth, window.innerHeight);
+// distance suffisante pour sortir de l'écran dans n'importe quelle direction
+const distance = maxDim * 1.2;
+
+const dx = Math.cos(angle) * distance;
+const dy = Math.sin(angle) * distance;
 
       p.style.setProperty('--dx', dx + 'px');
       p.style.setProperty('--dy', dy + 'px');
@@ -160,6 +165,7 @@
   </script>
 </body>
 </html>
+
 
 
 
