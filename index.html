@@ -53,20 +53,10 @@
     }
 
     @keyframes drift {
-      0% {
-        transform: translate(0, 0) scale(0.7);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-      }
-      95% {
-        opacity: 1; /* reste visible quasiment tout du long */
-      }
-      100% {
-        transform: translate(var(--dx), var(--dy)) scale(0.9);
-        opacity: 0; /* disparaît seulement à la fin */
-      }
+      0% { transform: translate(0, 0) scale(0.7); opacity: 0; }
+      10% { opacity: 1; }
+      95% { opacity: 1; }
+      100% { transform: translate(var(--dx), var(--dy)) scale(0.9); opacity: 0; }
     }
 
     /* CONTENU CENTRAL */
@@ -104,6 +94,23 @@
         0 0 18px rgba(0, 255, 170, 0.6),
         0 0 40px rgba(0, 120, 70, 0.9);
     }
+
+    .sound-btn{
+      margin-top: 1.2rem;
+      padding: 0.65rem 1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,170,.55);
+      background: rgba(0,0,0,.35);
+      color: #eafff6;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-size: .85rem;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+    }
+    .sound-btn:hover{
+      background: rgba(0,255,170,.12);
+    }
   </style>
 </head>
 
@@ -116,6 +123,10 @@
     <section class="content">
       <img src="01.png" alt="Fleur-Fantôme Via Umbra" class="logo" />
       <h1 class="title">VIA UMBRA</h1>
+
+      <button id="soundToggle" class="sound-btn" aria-pressed="false">
+        Activer le son
+      </button>
     </section>
   </main>
 
@@ -137,17 +148,15 @@
       p.style.setProperty('--size', size + 'px');
 
       // Mélange de teintes :
-      // 80% : ta couleur d'origine (vert turquoise)
-      // 20% : vert un peu plus franc (moins bleu)
-      const greener = Math.random() < 0.2; // 20% de spores plus vertes
+      // 80% : vert turquoise
+      // 20% : vert plus franc
+      const greener = Math.random() < 0.2;
 
       let color, glow;
       if (greener) {
-        // plus vert, un peu moins de bleu
         color = 'rgba(0, 255, 120, 0.95)';
         glow  = 'rgba(0, 255, 120, 1)';
       } else {
-        // couleur d'origine
         color = 'rgba(0, 255, 170, 0.9)';
         glow  = 'rgba(0, 255, 170, 1)';
       }
@@ -172,18 +181,58 @@
 
       layer.appendChild(p);
 
-      // Suppression après la fin de l'anim
       setTimeout(() => p.remove(), 130000);
     }
 
-    // On attend que tout soit chargé
+    // AUDIO
+    const audio = new Audio('assets/audio/ambiance.mp3');
+    audio.loop = true;
+    audio.preload = 'auto';
+    audio.volume = 0.25;
+
+    function wireSoundButton(){
+      const btn = document.getElementById('soundToggle');
+      if (!btn) return;
+
+      function setUi(isOn){
+        btn.setAttribute('aria-pressed', String(isOn));
+        btn.textContent = isOn ? 'Couper le son' : 'Activer le son';
+      }
+
+      async function tryAutoPlay(){
+        try{
+          await audio.play();
+          setUi(true);
+        } catch(e){
+          setUi(false);
+        }
+      }
+
+      btn.addEventListener('click', async () => {
+        if (!audio.paused){
+          audio.pause();
+          setUi(false);
+          return;
+        }
+        try{
+          await audio.play();
+          setUi(true);
+        } catch(e){
+          setUi(false);
+        }
+      });
+
+      tryAutoPlay();
+    }
+
     window.addEventListener('load', () => {
-      setInterval(spawnPollen, 750); // densité du pollen
+      wireSoundButton();
+      setInterval(spawnPollen, 750);
     });
   </script>
 </body>
 </html>
-
+  
 
 
 
