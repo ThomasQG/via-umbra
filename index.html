@@ -6,11 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html, body {
       height: 100%;
@@ -49,7 +45,7 @@
       background: var(--color, rgba(0, 255, 170, 0.9));
       box-shadow: 0 0 8px var(--glow, rgba(0, 255, 170, 0.9));
       opacity: 0;
-      animation: drift 100s linear forwards; /* plus lent, plus long à l’écran */
+      animation: drift 100s linear forwards;
     }
 
     @keyframes drift {
@@ -116,10 +112,8 @@
 
 <body>
   <main class="page">
-    <!-- Pollen vert généré dynamiquement -->
     <div class="particles-layer"></div>
 
-    <!-- Image + Titre -->
     <section class="content">
       <img src="01.png" alt="Fleur-Fantôme Via Umbra" class="logo" />
       <h1 class="title">VIA UMBRA</h1>
@@ -131,6 +125,7 @@
   </main>
 
   <script>
+    // --- POLLEN ---
     function spawnPollen() {
       const layer = document.querySelector('.particles-layer');
       const logo = document.querySelector('.logo');
@@ -147,9 +142,7 @@
       const size = Math.random() < 0.7 ? 4 : 6;
       p.style.setProperty('--size', size + 'px');
 
-      // Mélange de teintes :
-      // 80% : vert turquoise
-      // 20% : vert plus franc
+      // Mélange de teintes : 80% vert turquoise, 20% vert plus franc
       const greener = Math.random() < 0.2;
 
       let color, glow;
@@ -181,11 +174,14 @@
 
       layer.appendChild(p);
 
+      // suppression après la fin (un peu après l'anim pour être safe)
       setTimeout(() => p.remove(), 130000);
     }
 
-    // AUDIO
-    const audio = new Audio('assets/audio/ambiance.mp3');
+    // --- AUDIO ---
+    // Ton fichier : assets/audio/Thunderstorm 2.mp3
+    // Dans une URL, l'espace devient %20
+    const audio = new Audio('assets/audio/Thunderstorm%202.mp3');
     audio.loop = true;
     audio.preload = 'auto';
     audio.volume = 0.25;
@@ -204,6 +200,7 @@
           await audio.play();
           setUi(true);
         } catch(e){
+          // Autoplay bloqué par le navigateur -> bouton pour lancer
           setUi(false);
         }
       }
@@ -232,26 +229,6 @@
   </script>
 </body>
 </html>
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
